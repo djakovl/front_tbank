@@ -7,20 +7,13 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <a href="index.html" style="text-decoration: none; color: inherit;">🤖 AI Shopping Bot</a>
-            </div>
-            <div class="nav-links">
-                <a href="login.html" class="nav-link">Вход</a>
-            </div>
-        </div>
-    </nav>
     <div class="app-container">
         <!-- Левая панель: Чат -->
         <main class="chat-container">
             <div class="chat-header">
+                <div class="header-top">
+                    <a href="index.html" class="back-link">← Главное меню</a>
+                </div>
                 <h1>Ассистент подбора</h1>
                 <p class="subtitle">Уточняем параметры поездки</p>
                 <button class="undo-btn">← Отменить последнее действие</button>
@@ -158,6 +151,6 @@
         </aside>
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="../src/app.js"></script>
 </body>
 </html>

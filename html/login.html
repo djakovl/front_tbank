@@ -13,7 +13,6 @@
                 <a href="index.html" style="text-decoration: none; color: inherit;">🤖 AI Shopping Bot</a>
             </div>
             <div class="nav-links">
-                <a href="login.html" class="nav-link">Вход</a>
                 <a href="register.html" class="nav-link">Регистрация</a>
             </div>
         </div>
@@ -41,7 +40,7 @@
                         type="password" 
                         id="loginPassword" 
                         class="form-input" 
-                        placeholder="••••••••"
+                        placeholder="Введите пароль"
                         required
                     >
                 </div>
@@ -49,7 +48,7 @@
                 <div class="form-group checkbox-group">
                     <label class="checkbox-label">
                         <input type="checkbox" id="rememberMe">
-                        Запомнить меня
+                        <span>Запомнить меня</span>
                     </label>
                 </div>
 
@@ -59,14 +58,17 @@
                 <button type="submit" class="submit-btn">Войти</button>
 
                 <div class="form-footer">
-                    <a href="reset-password.html" class="link">Забыли пароль?</a>
-                    <span>•</span>
+                    <a href="change-password.html" class="link">Забыли пароль?</a>
+                </div>
+
+                <div class="form-footer">
+                    <span>Нет аккаунта?</span>
                     <a href="register.html" class="link">Создать аккаунт</a>
                 </div>
             </form>
         </div>
     </main>
 
-    <script src="app.js"></script>
+    <script type="module" src="../src/app.js"></script>
 </body>
 </html>

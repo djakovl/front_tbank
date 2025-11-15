@@ -49,18 +49,15 @@
         </div>
     </main>
 
-    <script src="app.js"></script>
     <script>
         document.getElementById('searchForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const query = document.getElementById('searchInput').value.trim();
 
-            // Сохраняем запрос если он есть
             if (query) {
                 sessionStorage.setItem('searchQuery', query);
             }
 
-            // Переходим на страницу чата в любом случае
             window.location.href = 'chat.html';
         });
     </script>

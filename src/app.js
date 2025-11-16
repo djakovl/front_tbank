@@ -265,21 +265,18 @@ function updateProductCount(productId, delta) {
 async function sendMessageToBackend(message) {
     const token = getToken();
 
-    if (!token) {
-        addMessage('Ошибка: необходима авторизация', false);
-        setTimeout(() => {
-            window.location.href = '../html/login.html';
-        }, 1500);
-        return;
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    if (token) {
+        headers['Authorization'] = token;
     }
 
     try {
         const response = await fetch('/backend', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `${token}`
-            },
+            headers: headers,
             body: JSON.stringify({
                 message: message,
                 params: AppState.params,
@@ -287,42 +284,33 @@ async function sendMessageToBackend(message) {
             })
         });
 
-        if (!response.ok) {
-            if (response.status === 401) {
-                removeToken();
-                window.location.href = '../html/login.html';
-                return;
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data.message) {
+                addMessage(data.message, false);
             }
-            throw new Error(`HTTP error! status: ${response.status}`);
+
+            if (data.products && data.products.length > 0) {
+                data.products.forEach(product => {
+                    if (!product.id) {
+                        product.id = AppState.nextProductId++;
+                    }
+                    addProductCardToChat(product);
+                });
+            }
+
+            if (data.buttons && data.buttons.length > 0) {
+                const buttonOptions = data.buttons.map(btn => ({
+                    text: btn.text,
+                    action: btn.action || 'custom',
+                    value: btn.value || btn.text
+                }));
+                addMessage('Выберите вариант:', false, buttonOptions);
+            }
         }
-
-        const data = await response.json();
-
-        if (data.message) {
-            addMessage(data.message, false);
-        }
-
-        if (data.products && data.products.length > 0) {
-            data.products.forEach(product => {
-                if (!product.id) {
-                    product.id = AppState.nextProductId++;
-                }
-                addProductCardToChat(product);
-            });
-        }
-
-        if (data.buttons && data.buttons.length > 0) {
-            const buttonOptions = data.buttons.map(btn => ({
-                text: btn.text,
-                action: btn.action || 'custom',
-                value: btn.value || btn.text
-            }));
-            addMessage('Выберите вариант:', false, buttonOptions);
-        }
-
     } catch (error) {
-        console.error('Error sending message:', error);
-        addMessage('Ошибка связи с сервером. Попробуйте позже.', false);
+        console.log('Бэкенд недоступен');
     }
 }
 
@@ -333,19 +321,22 @@ async function likeProduct(productId) {
 
         try {
             const token = getToken();
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+
             if (token) {
-                await fetch('/backend', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `${token}`
-                    },
-                    body: JSON.stringify({
-                        productId: productId,
-                        feedback: 'like'
-                    })
-                });
+                headers['Authorization'] = token;
             }
+
+            await fetch('/backend', {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify({
+                    productId: productId,
+                    feedback: 'like'
+                })
+            });
         } catch (error) {
             console.error('Error sending feedback:', error);
         }
@@ -355,28 +346,31 @@ async function likeProduct(productId) {
 async function dislikeProduct(productId) {
     try {
         const token = getToken();
-        if (token) {
-            await fetch('/backend', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `${token}`
-                },
-                body: JSON.stringify({
-                    productId: productId,
-                    feedback: 'dislike'
-                })
-            });
+        const headers = {
+            'Content-Type': 'application/json'
+        };
 
-            sendMessageToBackend('Покажи другие варианты');
+        if (token) {
+            headers['Authorization'] = token;
         }
+
+        await fetch('/backend', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                productId: productId,
+                feedback: 'dislike'
+            })
+        });
+
+        sendMessageToBackend('Покажи другие варианты');
     } catch (error) {
         console.error('Error sending feedback:', error);
     }
 }
 
 function handleButtonClick(action, value) {
-    addMessage(`Я выбрал: ${value}`, true);
+    addMessage(value, true);
     sendMessageToBackend(value);
 }
 
@@ -416,7 +410,7 @@ function initChat() {
 
 // ===== ПАРАМЕТРЫ =====
 
-async function saveParam(paramType) {
+function saveParam(paramType) {
     let value, message;
 
     if (paramType === 'address') {
@@ -441,7 +435,7 @@ async function saveParam(paramType) {
 
     addMessage(message, true);
     renderParams();
-    sendMessageToBackend(`Обновил параметры: ${message}`);
+    sendMessageToBackend(message);
 }
 
 function renderParams() {

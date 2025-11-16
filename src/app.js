@@ -17,9 +17,9 @@ const AppState = {
         budget: null,
         wishes: null
     },
-    offers: [], // Список необходимого (БЕЗ цены)
-    cart: [], // Корзина с карточками от бота
-    chatProducts: [], // Товары, показанные в чате
+    offers: [],
+    cart: [],
+    chatProducts: [],
     chatHistory: [],
     currentUser: null,
     nextOfferId: 1,
@@ -29,7 +29,6 @@ const AppState = {
 
 // ===== ФУНКЦИИ ЧАТА =====
 
-// Добавление текстового сообщения
 function addMessage(text, isUser = false, buttons = []) {
     const messagesContainer = document.getElementById('chatMessages');
     if (!messagesContainer) return;
@@ -80,7 +79,6 @@ function addMessage(text, isUser = false, buttons = []) {
     AppState.chatHistory.push({ text, isUser });
 }
 
-// Добавление карточки товара в чат
 function addProductCardToChat(product) {
     const messagesContainer = document.getElementById('chatMessages');
     if (!messagesContainer) return;
@@ -107,14 +105,12 @@ function addProductCardToChat(product) {
     card.className = 'product-card-chat';
     card.setAttribute('data-product-id', product.id);
 
-    // Картинка
     const img = document.createElement('img');
     img.src = product.picture;
     img.alt = product.name;
     img.className = 'product-image-chat';
     img.onclick = () => window.open(product.link, '_blank');
 
-    // Информация
     const info = document.createElement('div');
     info.className = 'product-info-chat';
 
@@ -144,7 +140,6 @@ function addProductCardToChat(product) {
         info.appendChild(size);
     }
 
-    // Рейтинг и отзывы
     if (product.rating || product.ammountOfReviews) {
         const meta = document.createElement('div');
         meta.className = 'product-meta-chat';
@@ -166,11 +161,9 @@ function addProductCardToChat(product) {
         info.appendChild(meta);
     }
 
-    // Нижняя строка
     const bottomRow = document.createElement('div');
     bottomRow.className = 'product-bottom-row';
 
-    // Кнопки
     const actions = document.createElement('div');
     actions.className = 'product-actions-chat';
 
@@ -193,7 +186,6 @@ function addProductCardToChat(product) {
     actions.appendChild(likeBtn);
     actions.appendChild(dislikeBtn);
 
-    // Количество
     const quantityDiv = document.createElement('div');
     quantityDiv.className = 'product-quantity-chat';
 
@@ -254,7 +246,6 @@ function addProductCardToChat(product) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Обновление количества товара
 function updateProductCount(productId, delta) {
     const product = AppState.chatProducts.find(p => p.id === productId);
     if (!product) return;
@@ -271,7 +262,6 @@ function updateProductCount(productId, delta) {
     }
 }
 
-// Отправка сообщения на бэкенд
 async function sendMessageToBackend(message) {
     const token = getToken();
 
@@ -336,12 +326,10 @@ async function sendMessageToBackend(message) {
     }
 }
 
-// Лайк/дизлайк товара
 async function likeProduct(productId) {
     const product = AppState.chatProducts.find(p => p.id === productId);
     if (product) {
         addToCart(product);
-        addMessage('Отлично! Добавил этот товар в корзину 🛒', false);
 
         try {
             const token = getToken();
@@ -365,8 +353,6 @@ async function likeProduct(productId) {
 }
 
 async function dislikeProduct(productId) {
-    addMessage('Понял, поищу другие варианты 🔍', false);
-
     try {
         const token = getToken();
         if (token) {
@@ -394,7 +380,6 @@ function handleButtonClick(action, value) {
     sendMessageToBackend(value);
 }
 
-// Инициализация чата
 function initChat() {
     const searchQuery = sessionStorage.getItem('searchQuery');
 
@@ -402,8 +387,6 @@ function initChat() {
         addMessage(searchQuery, true);
         sendMessageToBackend(searchQuery);
         sessionStorage.removeItem('searchQuery');
-    } else {
-        addMessage('Здравствуйте! Давайте подберём товары для вашей поездки!', false);
     }
 
     const messageInput = document.getElementById('messageInput');
@@ -528,7 +511,6 @@ function initOffers() {
                     offer.desc = desc;
                     offer.count = parseInt(count);
                 }
-                addMessage(`Обновил товар "${name}"`, true);
             } else {
                 const offer = {
                     id: AppState.nextOfferId++,
@@ -538,7 +520,6 @@ function initOffers() {
                 };
 
                 AppState.offers.push(offer);
-                addMessage(`Добавил товар "${name}" в список необходимого`, true);
             }
 
             renderOffers();

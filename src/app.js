@@ -284,7 +284,7 @@ async function sendMessageToBackend(message) {
     }
 
     try {
-        const response = await fetch('/api/chat/message', {
+        const response = await fetch('/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -346,11 +346,11 @@ async function likeProduct(productId) {
         try {
             const token = getToken();
             if (token) {
-                await fetch('/api/chat/feedback', {
+                await fetch('/backend', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
+                        'Authorization': `${token}`
                     },
                     body: JSON.stringify({
                         productId: productId,
@@ -370,11 +370,11 @@ async function dislikeProduct(productId) {
     try {
         const token = getToken();
         if (token) {
-            await fetch('/api/chat/feedback', {
+            await fetch('/backend', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': `${token}`
                 },
                 body: JSON.stringify({
                     productId: productId,

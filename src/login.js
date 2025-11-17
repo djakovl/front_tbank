@@ -1,21 +1,21 @@
 // ===== ИМПОРТЫ =====
-import { validatePassword, hashPassword, saveToken, getToken } from './utils.js';
+import { validatePassword, hashPassword, saveToken } from './utils.js';
 
 // ===== ФУНКЦИИ АВТОРИЗАЦИИ =====
 
 // Вход в систему
 export async function handleLogin(e) {
     e.preventDefault();
-
-    const email = document.getElementById('loginEmail').value;
+    
+    const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     const errorEl = document.getElementById('loginError');
     const successEl = document.getElementById('loginSuccess');
-
+    
     // Очищаем сообщения
     if (errorEl) errorEl.classList.remove('show');
     if (successEl) successEl.classList.remove('show');
-
+    
     // Валидация
     if (!email || !password) {
         if (errorEl) {
@@ -24,39 +24,39 @@ export async function handleLogin(e) {
         }
         return;
     }
-
+    
     try {
         // Хешируем пароль
         const hashedPassword = await hashPassword(password);
-
+        
         // Отправка запроса на бэкенд
-        const response = await fetch('/backend', {
+        const response = await fetch('/backend/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'action': 'handleLogin'
             },
-            action: 'handleLogin',
             body: JSON.stringify({
                 email: email,
-                password: hashedPassword,
+                password: hashedPassword
             })
         });
-
+        
         const data = await response.json();
-
+        
         if (response.ok) {
             // Успех
             if (successEl) {
                 successEl.textContent = 'Вход выполнен успешно! Перенаправление...';
                 successEl.classList.add('show');
             }
-
+            
             // Сохраняем токен
             saveToken(data.token);
-
+            
             // Перенаправление
             setTimeout(() => {
-                window.location.href = '../html/chat.html';
+                window.location.href = '/html/chat.html';
             }, 1500);
         } else {
             // Ошибка от сервера
@@ -78,16 +78,17 @@ export async function handleLogin(e) {
 // Регистрация
 export async function handleRegister(e) {
     e.preventDefault();
-    const email = document.getElementById('registerEmail').value;
+    
+    const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value;
     const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
     const errorEl = document.getElementById('registerError');
     const successEl = document.getElementById('registerSuccess');
-
+    
     // Очищаем сообщения
     if (errorEl) errorEl.classList.remove('show');
     if (successEl) successEl.classList.remove('show');
-
+    
     // Валидация
     if (!email || !password || !passwordConfirm) {
         if (errorEl) {
@@ -96,18 +97,17 @@ export async function handleRegister(e) {
         }
         return;
     }
-
+    
     // Валидация пароля
     const passwordError = validatePassword(password);
     if (passwordError) {
-        
         if (errorEl) {
             errorEl.textContent = passwordError;
             errorEl.classList.add('show');
         }
         return;
     }
-
+    
     // Проверка совпадения паролей
     if (password !== passwordConfirm) {
         if (errorEl) {
@@ -116,40 +116,39 @@ export async function handleRegister(e) {
         }
         return;
     }
-
+    
     try {
         // Хешируем пароль
         const hashedPassword = await hashPassword(password);
-
+        
         // Отправка запроса на бэкенд
-        const response = await fetch('/backend', {
+        const response = await fetch('/backend/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'action': 'handleRegister'
             },
-            action: 'handleRegister',
             body: JSON.stringify({
                 email: email,
                 password: hashedPassword
             })
         });
-        console.log(hashedPassword);
-        console.log(response);
+        
         const data = await response.json();
-
+        
         if (response.ok) {
             // Успех
             if (successEl) {
                 successEl.textContent = 'Регистрация успешна! Перенаправление...';
                 successEl.classList.add('show');
             }
-
+            
             // Сохраняем токен
             saveToken(data.token);
-
+            
             // Перенаправление
             setTimeout(() => {
-                window.location.href = '../html/chat.html';
+                window.location.href = '/html/chat.html';
             }, 1500);
         } else {
             // Ошибка от сервера
@@ -164,7 +163,7 @@ export async function handleRegister(e) {
             errorEl.textContent = 'Ошибка соединения с сервером';
             errorEl.classList.add('show');
         }
-        console.log('Registration error:', error);
+        console.error('Registration error:', error);
     }
 }
 
@@ -173,15 +172,15 @@ export async function handleRegister(e) {
 // Запрос на сброс пароля
 export async function handlePasswordResetRequest(e) {
     e.preventDefault();
-
+    
     const email = document.getElementById('resetEmail').value.trim();
     const errorEl = document.getElementById('resetError');
     const successEl = document.getElementById('resetSuccess');
-
+    
     // Очищаем сообщения
     if (errorEl) errorEl.classList.remove('show');
     if (successEl) successEl.classList.remove('show');
-
+    
     // Валидация email
     if (!email) {
         if (errorEl) {
@@ -190,7 +189,7 @@ export async function handlePasswordResetRequest(e) {
         }
         return;
     }
-
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         if (errorEl) {
@@ -199,31 +198,32 @@ export async function handlePasswordResetRequest(e) {
         }
         return;
     }
-
+    
     try {
         // Отправка запроса
-        const response = await fetch('/backend', {
+        const response = await fetch('/backend/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'action': 'resetPassword'
             },
-            action: 'resetPassword',
-            body: JSON.stringify({ email: email })
+            body: JSON.stringify({
+                email: email
+            })
         });
-
+        
         const data = await response.json();
-
+        
         if (response.ok) {
             // Успех
             if (successEl) {
                 successEl.textContent = 'Ссылка для сброса пароля отправлена на ваш email';
                 successEl.classList.add('show');
             }
-
+            
             document.getElementById('resetEmail').value = '';
-
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.href = '/html/login.html';
             }, 3000);
         } else {
             // Ошибка
@@ -244,17 +244,17 @@ export async function handlePasswordResetRequest(e) {
 // Установка нового пароля
 export async function handlePasswordChange(e) {
     e.preventDefault();
-
+    
     const email = document.getElementById('changeEmail').value.trim();
     const password = document.getElementById('changePassword').value;
     const passwordConfirm = document.getElementById('changePasswordConfirm').value;
     const errorEl = document.getElementById('changeError');
     const successEl = document.getElementById('changeSuccess');
-
+    
     // Очищаем сообщения
     if (errorEl) errorEl.classList.remove('show');
     if (successEl) successEl.classList.remove('show');
-
+    
     // Валидация
     if (!email || !password || !passwordConfirm) {
         if (errorEl) {
@@ -263,7 +263,7 @@ export async function handlePasswordChange(e) {
         }
         return;
     }
-
+    
     // Валидация email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -273,7 +273,7 @@ export async function handlePasswordChange(e) {
         }
         return;
     }
-
+    
     // Валидация пароля
     const passwordError = validatePassword(password);
     if (passwordError) {
@@ -283,7 +283,7 @@ export async function handlePasswordChange(e) {
         }
         return;
     }
-
+    
     // Проверка совпадения
     if (password !== passwordConfirm) {
         if (errorEl) {
@@ -292,12 +292,12 @@ export async function handlePasswordChange(e) {
         }
         return;
     }
-
+    
     try {
         // Получаем токен из URL
         const urlParams = new URLSearchParams(window.location.search);
         const resetToken = urlParams.get('token');
-
+        
         if (!resetToken) {
             if (errorEl) {
                 errorEl.textContent = 'Недействительная ссылка для сброса пароля';
@@ -305,40 +305,40 @@ export async function handlePasswordChange(e) {
             }
             return;
         }
-
+        
         // Хешируем пароль
         const hashedPassword = await hashPassword(password);
-
+        
         // Отправка запроса
-        const response = await fetch('/backend', {
+        const response = await fetch('/backend/', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'action': 'changePassword'
             },
-            action: 'changePassword',
             body: JSON.stringify({
                 email: email,
                 token: resetToken,
                 password: hashedPassword
             })
         });
-
+        
         const data = await response.json();
-
+        
         if (response.ok) {
             // Успех
             if (successEl) {
                 successEl.textContent = 'Пароль успешно изменён! Перенаправление...';
                 successEl.classList.add('show');
             }
-
+            
             // Очищаем поля
             document.getElementById('changeEmail').value = '';
             document.getElementById('changePassword').value = '';
             document.getElementById('changePasswordConfirm').value = '';
-
+            
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.href = '/html/login.html';
             }, 2000);
         } else {
             // Ошибка
@@ -363,20 +363,23 @@ export function initAuth() {
     const registerForm = document.getElementById('registerForm');
     const resetForm = document.getElementById('resetPasswordForm');
     const changeForm = document.getElementById('changePasswordForm');
-
+    
     if (loginForm) {
         loginForm.addEventListener('submit', handleLogin);
     }
-
+    
     if (registerForm) {
         registerForm.addEventListener('submit', handleRegister);
     }
-
+    
     if (resetForm) {
         resetForm.addEventListener('submit', handlePasswordResetRequest);
     }
-
+    
     if (changeForm) {
         changeForm.addEventListener('submit', handlePasswordChange);
     }
 }
+
+// Инициализируем при загрузке страницы
+document.addEventListener('DOMContentLoaded', initAuth);

@@ -266,7 +266,9 @@ async function sendMessageToBackend(message) {
     const token = getToken();
 
     const headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'action': 'message'
+        
     };
 
     if (token) {
@@ -277,7 +279,6 @@ async function sendMessageToBackend(message) {
         const response = await fetch('/backend', {
             method: 'POST',
             headers: headers,
-            action: 'message',
             body: JSON.stringify({
                 message: message,
                 params: AppState.params,
@@ -323,7 +324,8 @@ async function likeProduct(productId) {
         try {
             const token = getToken();
             const headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'action': 'likeProduct'
             };
 
             if (token) {
@@ -333,7 +335,6 @@ async function likeProduct(productId) {
             await fetch('/backend', {
                 method: 'POST',
                 headers: headers,
-                action: 'likeProduct',
                 body: JSON.stringify({
                     productId: productId,
                     feedback: 'like'
@@ -349,7 +350,8 @@ async function dislikeProduct(productId) {
     try {
         const token = getToken();
         const headers = {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'action': 'dislikeProduct'
         };
 
         if (token) {
@@ -359,7 +361,6 @@ async function dislikeProduct(productId) {
         await fetch('/backend', {
             method: 'POST',
             headers: headers,
-            action: 'dislikeProduct',
             body: JSON.stringify({
                 productId: productId,
                 feedback: 'dislike'
@@ -700,7 +701,8 @@ async function checkoutCart() {
 
     const token = getToken();
     const headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'action': 'checkout'
     };
 
     if (token) {
@@ -711,7 +713,6 @@ async function checkoutCart() {
         const response = await fetch('/backend', {
             method: 'POST',
             headers: headers,
-            action: 'checkout',
             body: JSON.stringify({
                 products: productLinks
             })

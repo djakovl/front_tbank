@@ -687,8 +687,61 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+// ===== ОФОРМЛЕНИЕ ЗАКАЗА =====
+
+async function checkoutCart() {
+    if (AppState.cart.length === 0) {
+        alert('Корзина пуста!');
+        return;
+    }
+
+    // Собираем все ссылки из корзины
+    const productLinks = AppState.cart.map(item => item.link);
+
+    const token = getToken();
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    if (token) {
+        headers['Authorization'] = token;
+    }
+
+    try {
+        const response = await fetch('/backend', {
+            method: 'POST',
+            headers: headers,
+            action: 'checkout',
+            body: JSON.stringify({
+                products: productLinks
+            })
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            // Если бэк вернул сообщение - показываем
+            if (data.message) {
+                alert(data.message);
+            } else {
+                alert('Заказ успешно оформлен!');
+            }
+
+            // Очищаем корзину после успешного оформления
+            AppState.cart = [];
+            renderCart();
+        } else {
+            alert('Ошибка при оформлении заказа');
+        }
+    } catch (error) {
+        console.error('Error checkout:', error);
+        alert('Не удалось связаться с сервером');
+    }
+}
+
 // Глобальные функции
 window.saveParam = saveParam;
+window.checkoutCart = checkoutCart;
 window.editOffer = editOffer;
 window.deleteOffer = deleteOffer;
 window.updateOfferCount = updateOfferCount;

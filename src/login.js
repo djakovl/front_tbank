@@ -9,7 +9,6 @@ export async function handleLogin(e) {
 
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
-    const remember = document.getElementById('rememberMe')?.checked || false;
     const errorEl = document.getElementById('loginError');
     const successEl = document.getElementById('loginSuccess');
 
@@ -31,15 +30,15 @@ export async function handleLogin(e) {
         const hashedPassword = await hashPassword(password);
 
         // Отправка запроса на бэкенд
-        const response = await fetch('/api/auth/login', {
+        const response = await fetch('/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            action: 'handleLogin',
             body: JSON.stringify({
-                email,
+                email: email,
                 password: hashedPassword,
-                remember
             })
         });
 
@@ -79,8 +78,6 @@ export async function handleLogin(e) {
 // Регистрация
 export async function handleRegister(e) {
     e.preventDefault();
-
-    const name = document.getElementById('registerName').value;
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
     const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
@@ -92,7 +89,7 @@ export async function handleRegister(e) {
     if (successEl) successEl.classList.remove('show');
 
     // Валидация
-    if (!name || !email || !password || !passwordConfirm) {
+    if (!email || !password || !passwordConfirm) {
         if (errorEl) {
             errorEl.textContent = 'Заполните все обязательные поля';
             errorEl.classList.add('show');
@@ -103,6 +100,7 @@ export async function handleRegister(e) {
     // Валидация пароля
     const passwordError = validatePassword(password);
     if (passwordError) {
+        
         if (errorEl) {
             errorEl.textContent = passwordError;
             errorEl.classList.add('show');
@@ -124,14 +122,14 @@ export async function handleRegister(e) {
         const hashedPassword = await hashPassword(password);
 
         // Отправка запроса на бэкенд
-        const response = await fetch('/api/auth/register', {
+        const response = await fetch('/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            action: 'handleRegister',
             body: JSON.stringify({
-                name,
-                email,
+                email: email,
                 password: hashedPassword
             })
         });
@@ -203,12 +201,13 @@ export async function handlePasswordResetRequest(e) {
 
     try {
         // Отправка запроса
-        const response = await fetch('/api/auth/reset-password-request', {
+        const response = await fetch('/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email })
+            action: 'resetPassword',
+            body: JSON.stringify({ email: email })
         });
 
         const data = await response.json();
@@ -310,13 +309,14 @@ export async function handlePasswordChange(e) {
         const hashedPassword = await hashPassword(password);
 
         // Отправка запроса
-        const response = await fetch('/api/auth/reset-password', {
+        const response = await fetch('/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
+            action: 'changePassword',
             body: JSON.stringify({
-                email,
+                email: email,
                 token: resetToken,
                 password: hashedPassword
             })

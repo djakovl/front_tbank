@@ -277,6 +277,7 @@ async function sendMessageToBackend(message) {
         const response = await fetch('/backend', {
             method: 'POST',
             headers: headers,
+            action: 'message',
             body: JSON.stringify({
                 message: message,
                 params: AppState.params,
@@ -332,6 +333,7 @@ async function likeProduct(productId) {
             await fetch('/backend', {
                 method: 'POST',
                 headers: headers,
+                action: 'likeProduct',
                 body: JSON.stringify({
                     productId: productId,
                     feedback: 'like'
@@ -357,12 +359,12 @@ async function dislikeProduct(productId) {
         await fetch('/backend', {
             method: 'POST',
             headers: headers,
+            action: 'dislikeProduct',
             body: JSON.stringify({
                 productId: productId,
                 feedback: 'dislike'
             })
         });
-
         sendMessageToBackend('Покажи другие варианты');
     } catch (error) {
         console.error('Error sending feedback:', error);

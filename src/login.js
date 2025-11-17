@@ -133,7 +133,8 @@ export async function handleRegister(e) {
                 password: hashedPassword
             })
         });
-
+        console.log(hashedPassword);
+        console.log(response);
         const data = await response.json();
 
         if (response.ok) {
@@ -163,7 +164,7 @@ export async function handleRegister(e) {
             errorEl.textContent = 'Ошибка соединения с сервером';
             errorEl.classList.add('show');
         }
-        console.error('Registration error:', error);
+        console.log('Registration error:', error);
     }
 }
 

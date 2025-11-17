@@ -9,12 +9,12 @@ echo =====================================================
 echo Web Server - Python HTTP Server
 echo =====================================================
 echo.
-echo Starting server on http://localhost:8000
+echo Starting server on http://localhost:8081
 echo.
 echo Press Ctrl+C to stop the server
 echo.
 
 REM Запускаем PowerShell с командой для http сервера
-powershell -NoProfile -Command "cd '%cd%'; py -m http.server 8000"
+powershell -NoProfile -Command "cd '%cd%'; py -m http.server 8081"
 
 pause

@@ -6,15 +6,14 @@
 }
 
 :root {
-    --primary-color: #6366f1;
-    --primary-dark: #4f46e5;
-    --secondary-color: #8b5cf6;
-    --bg-color: #f9fafb;
+    --primary-color: #ffdd2d;
+    --primary-dark: #000000;
+    --secondary-color: #ffcd33;
+    --bg-color: #f6f7f8;
     --bg-light: #ffffff;
     --text-primary: #111827;
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
-    --success-color: #10b981;
     --error-color: #ef4444;
     --warning-color: #f59e0b;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -53,7 +52,7 @@ body {
 .logo {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--primary-dark);
 }
 
 .nav-links {
@@ -70,7 +69,7 @@ body {
 }
 
 .nav-link:hover {
-    color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
 /* ===== ГЛАВНАЯ СТРАНИЦА (LANDING) ===== */
@@ -125,7 +124,7 @@ body {
 .search-button {
     padding: 1rem 2rem;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--primary-dark);
     border: none;
     border-radius: 12px;
     font-size: 1rem;
@@ -135,7 +134,7 @@ body {
 }
 
 .search-button:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -198,7 +197,7 @@ body {
 }
 
 .back-link:hover {
-    color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
 .chat-header h1 {
@@ -285,7 +284,7 @@ body {
 
 .message.user .message-text {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--primary-dark);
 }
 
 .message-time {
@@ -427,15 +426,15 @@ body {
 }
 
 .like-btn:hover {
-    background-color: var(--success-color);
-    color: white;
-    border-color: var(--success-color);
+    background-color: var(--primary-color);
+    color: var(--primary-dark);
+    border-color: var(--primary-color);
 }
 
 .dislike-btn:hover {
-    background-color: var(--error-color);
+    background-color: var(--primary-dark);
     color: white;
-    border-color: var(--error-color);
+    border-color: var(--primary-dark);
 }
 
 .product-quantity-chat {
@@ -503,7 +502,7 @@ body {
     width: 42px;
     height: 42px;
     background-color: var(--primary-color);
-    color: white;
+    color:var(--primary-dark);
     border: none;
     border-radius: 12px;
     font-size: 1.25rem;
@@ -516,7 +515,8 @@ body {
 }
 
 .send-btn:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--secondary-color);
+    color: var(--primary-dark);
 }
 
 /* ===== ПРАВАЯ ПАНЕЛЬ ===== */
@@ -552,12 +552,12 @@ body {
 }
 
 .tab-btn:hover {
-    color: var(--primary-color);
+    color: var(--primary-dark);
 }
 
 .tab-btn.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
+    color: var(--primary-dark);
+    border-bottom-color: var(--primary-dark);
 }
 
 .tabs-content {
@@ -638,7 +638,7 @@ body {
 
 .edit-btn {
     background-color: var(--primary-color);
-    color: white;
+    color:var(--primary-dark);
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 8px;
@@ -649,7 +649,8 @@ body {
 }
 
 .edit-btn:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--secondary-color);
+    color: var(--primary-dark);
 }
 
 .saved-params {
@@ -667,7 +668,7 @@ body {
 .add-btn {
     padding: 0.75rem;
     background-color: var(--primary-color);
-    color: white;
+    color:var(--primary-dark);
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -677,7 +678,9 @@ body {
 }
 
 .add-btn:hover {
-    background-color: var(--primary-dark);
+    
+    background-color: var(--secondary-color);
+    color: var(--primary-dark);
 }
 
 .offer-form {
@@ -727,11 +730,12 @@ body {
 }
 
 .save-offer-btn {
-    background-color: var(--success-color);
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--primary-dark);
 }
 
 .save-offer-btn:hover {
+    background-color: var(--secondary-color);
     opacity: 0.9;
 }
 
@@ -946,8 +950,8 @@ body {
 .checkout-btn {
     width: 100%;
     padding: 0.875rem;
-    background-color: var(--success-color);
-    color: white;
+    background-color: var(--primary-color);
+    color: black;
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -956,6 +960,7 @@ body {
 }
 
 .checkout-btn:hover {
+    background-color: var(--secondary-color);
     opacity: 0.9;
 }
 
@@ -1037,7 +1042,7 @@ body {
 .submit-btn {
     padding: 1rem;
     background-color: var(--primary-color);
-    color: white;
+    color: var(--primary-dark);
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -1048,7 +1053,8 @@ body {
 }
 
 .submit-btn:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--secondary-color);
+    color: var(--primary-dark);
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
@@ -1067,6 +1073,7 @@ body {
 }
 
 .form-footer .link:hover {
+    color: var(--secondary-color);
     text-decoration: underline;
 }
 
@@ -1084,7 +1091,7 @@ body {
 }
 
 .success-message {
-    color: var(--success-color);
+    color: var(--primary-color);
     font-size: 0.875rem;
     padding: 0.75rem;
     background-color: #efe;

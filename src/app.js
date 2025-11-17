@@ -276,7 +276,7 @@ async function sendMessageToBackend(message) {
     }
 
     try {
-        const response = await fetch('/backend', {
+        const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
@@ -316,7 +316,7 @@ async function sendMessageToBackend(message) {
     }
 }
 
-async function likeProduct(productId) {
+async function likeProduct(product) {
     const product = AppState.chatProducts.find(p => p.id === productId);
     if (product) {
         addToCart(product);
@@ -332,11 +332,11 @@ async function likeProduct(productId) {
                 headers['Authorization'] = token;
             }
 
-            await fetch('/backend', {
+            await fetch('http://localhost:3110/backend', {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify({
-                    productId: productId,
+                    product: product,
                     feedback: 'like'
                 })
             });
@@ -358,7 +358,7 @@ async function dislikeProduct(productId) {
             headers['Authorization'] = token;
         }
 
-        await fetch('/backend', {
+        await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
@@ -710,7 +710,7 @@ async function checkoutCart() {
     }
 
     try {
-        const response = await fetch('/backend', {
+        const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({

@@ -30,7 +30,7 @@ export async function handleLogin(e) {
         const hashedPassword = await hashPassword(password);
         
         // Отправка запроса на бэкенд
-        const response = await fetch('/backend/', {
+        const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ export async function handleRegister(e) {
         const hashedPassword = await hashPassword(password);
         console.log('кайф');
         // Отправка запроса на бэкенд
-        const response = await fetch('/backend/', {
+        const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ export async function handlePasswordResetRequest(e) {
     
     try {
         // Отправка запроса
-        const response = await fetch('/backend/', {
+        const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -313,7 +313,7 @@ export async function handlePasswordChange(e) {
         const hashedPassword = await hashPassword(password);
         
         // Отправка запроса
-        const response = await fetch('/backend/', {
+        const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

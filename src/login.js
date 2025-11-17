@@ -78,7 +78,7 @@ export async function handleLogin(e) {
 // Регистрация
 export async function handleRegister(e) {
     e.preventDefault();
-    
+    console.log('пошло');
     const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value;
     const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
@@ -118,9 +118,10 @@ export async function handleRegister(e) {
     }
     
     try {
+        console.log('поехало');
         // Хешируем пароль
         const hashedPassword = await hashPassword(password);
-        
+        console.log('кайф');
         // Отправка запроса на бэкенд
         const response = await fetch('/backend/', {
             method: 'POST',
@@ -133,6 +134,8 @@ export async function handleRegister(e) {
                 password: hashedPassword
             })
         });
+        console.log('збс');
+        console.log(response);
         
         const data = await response.json();
         

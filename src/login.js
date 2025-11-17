@@ -1,5 +1,5 @@
 // ===== ИМПОРТЫ =====
-import { validatePassword, hashPassword, saveToken } from './utils.js';
+import { validatePassword, hashPassword, saveToken, removeToken } from './utils.js';
 
 // ===== ФУНКЦИИ АВТОРИЗАЦИИ =====
 
@@ -78,7 +78,6 @@ export async function handleLogin(e) {
 // Регистрация
 export async function handleRegister(e) {
     e.preventDefault();
-    console.log('пошло');
     const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value;
     const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
@@ -118,10 +117,8 @@ export async function handleRegister(e) {
     }
     
     try {
-        console.log('поехало');
         // Хешируем пароль
         const hashedPassword = await hashPassword(password);
-        console.log('кайф');
         // Отправка запроса на бэкенд
         const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
@@ -134,8 +131,6 @@ export async function handleRegister(e) {
                 password: hashedPassword
             })
         });
-        console.log('збс');
-        console.log(response);
         
         const data = await response.json();
         
@@ -175,7 +170,9 @@ export async function handleRegister(e) {
 // Запрос на сброс пароля
 export async function handlePasswordResetRequest(e) {
     e.preventDefault();
-    
+    if(token){
+        removeToken();
+    }
     const email = document.getElementById('resetEmail').value.trim();
     const errorEl = document.getElementById('resetError');
     const successEl = document.getElementById('resetSuccess');
@@ -247,7 +244,9 @@ export async function handlePasswordResetRequest(e) {
 // Установка нового пароля
 export async function handlePasswordChange(e) {
     e.preventDefault();
-    
+    if(token){
+        removeToken();
+    }
     const email = document.getElementById('changeEmail').value.trim();
     const password = document.getElementById('changePassword').value;
     const passwordConfirm = document.getElementById('changePasswordConfirm').value;
@@ -300,18 +299,17 @@ export async function handlePasswordChange(e) {
         // Получаем токен из URL
         const urlParams = new URLSearchParams(window.location.search);
         const resetToken = urlParams.get('token');
-        
+        /*
         if (!resetToken) {
             if (errorEl) {
                 errorEl.textContent = 'Недействительная ссылка для сброса пароля';
                 errorEl.classList.add('show');
             }
             return;
-        }
+        }*/
         
         // Хешируем пароль
         const hashedPassword = await hashPassword(password);
-        
         // Отправка запроса
         const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
@@ -325,7 +323,6 @@ export async function handlePasswordChange(e) {
                 password: hashedPassword
             })
         });
-        
         const data = await response.json();
         
         if (response.ok) {

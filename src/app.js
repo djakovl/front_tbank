@@ -172,7 +172,7 @@ function addProductCardToChat(product) {
     likeBtn.textContent = '👍 Нравится';
     likeBtn.onclick = (e) => {
         e.stopPropagation();
-        likeProduct(product.id);
+        likeProduct(product);
     };
 
     const dislikeBtn = document.createElement('button');
@@ -264,22 +264,20 @@ function updateProductCount(productId, delta) {
 
 async function sendMessageToBackend(message) {
     const token = getToken();
-
     const headers = {
         'Content-Type': 'application/json',
         'action': 'message'
         
     };
 
-    if (token) {
-        headers['Authorization'] = token;
-    }
+
 
     try {
         const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
+                Token: token,
                 message: message,
                 params: AppState.params,
                 chatHistory: AppState.chatHistory.slice(-10)
@@ -317,7 +315,6 @@ async function sendMessageToBackend(message) {
 }
 
 async function likeProduct(product) {
-    const product = AppState.chatProducts.find(p => p.id === productId);
     if (product) {
         addToCart(product);
 
@@ -328,15 +325,12 @@ async function likeProduct(product) {
                 'action': 'likeProduct'
             };
 
-            if (token) {
-                headers['Authorization'] = token;
-            }
-
             await fetch('http://localhost:3110/backend', {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify({
                     product: product,
+                    token: token,
                     feedback: 'like'
                 })
             });
@@ -354,14 +348,13 @@ async function dislikeProduct(productId) {
             'action': 'dislikeProduct'
         };
 
-        if (token) {
-            headers['Authorization'] = token;
-        }
+
 
         await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
+                Token: token,
                 productId: productId,
                 feedback: 'dislike'
             })
@@ -705,15 +698,13 @@ async function checkoutCart() {
         'action': 'checkout'
     };
 
-    if (token) {
-        headers['Authorization'] = token;
-    }
 
     try {
         const response = await fetch('http://localhost:3110/backend', {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
+                Token: token,
                 products: productLinks
             })
         });

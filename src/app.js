@@ -267,7 +267,6 @@ async function sendMessageToBackend(message) {
     const headers = {
         'Content-Type': 'application/json',
         'action': 'message'
-        
     };
 
 
@@ -277,7 +276,8 @@ async function sendMessageToBackend(message) {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
-                Token: token,
+                token: token,
+                email: null,
                 message: message,
                 params: AppState.params,
                 chatHistory: AppState.chatHistory.slice(-10)

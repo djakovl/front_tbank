@@ -22,9 +22,6 @@
         <!-- Левая панель: Чат -->
         <main class="chat-container">
             <div class="chat-header">
-                <div class="header-top">
-                    <a href="index.html" class="back-link">← Главное меню</a>
-                </div>
                 <h1>Ассистент подбора</h1>
                 <p class="subtitle">Уточняем параметры поездки</p>
                 <button class="undo-btn">← Отменить последнее действие</button>
@@ -51,7 +48,6 @@
             <!-- Табы -->
             <div class="tabs-header">
                 <button class="tab-btn active" data-tab="params">Параметры</button>
-                <button class="tab-btn" data-tab="offers">Список необходимого</button>
                 <button class="tab-btn" data-tab="cart">Корзина</button>
             </div>
 
@@ -108,29 +104,6 @@
                         <div id="paramsList">
                             <p class="empty-message">Параметры не заданы</p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- ТАБ 2: СПИСОК НЕОБХОДИМОГО -->
-                <div class="tab-content" id="tab-offers">
-                    <div class="section-title">Список необходимого</div>
-
-                    <button class="add-btn" id="addOfferBtn">+ Добавить товар</button>
-
-                    <!-- Форма добавления товара (БЕЗ ЦЕНЫ!) -->
-                    <div class="offer-form" id="offerForm" style="display: none;">
-                        <h3>Добавить товар</h3>
-                        <input type="text" id="offerName" placeholder="Название товара" class="form-input">
-                        <textarea id="offerDesc" placeholder="Описание" class="form-textarea" rows="2"></textarea>
-                        <input type="number" id="offerCount" placeholder="Количество" class="form-input" value="1" min="1">
-                        <div class="form-buttons">
-                            <button class="save-offer-btn" id="saveOfferBtn">Сохранить</button>
-                            <button class="cancel-offer-btn" id="cancelOfferBtn">Отмена</button>
-                        </div>
-                    </div>
-
-                    <div class="offers-list" id="offersList">
-                        <!-- Товары добавляются динамически -->
                     </div>
                 </div>
 

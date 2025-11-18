@@ -180,7 +180,7 @@ function addProductCardToChat(product) {
     dislikeBtn.textContent = '👎 Не то';
     dislikeBtn.onclick = (e) => {
         e.stopPropagation();
-        dislikeProduct(product.id);
+        dislikeProduct(product);
     };
 
     actions.appendChild(likeBtn);
@@ -266,7 +266,8 @@ async function sendMessageToBackend(message) {
     const token = getToken();
     const headers = {
         'Content-Type': 'application/json',
-        'action': 'message'
+        'action': 'messageML'
+        
     };
 
 
@@ -340,12 +341,12 @@ async function likeProduct(product) {
     }
 }
 
-async function dislikeProduct(productId) {
+async function dislikeProduct(product) {
     try {
         const token = getToken();
         const headers = {
             'Content-Type': 'application/json',
-            'action': 'dislikeProduct'
+            'action': 'likeProduct'
         };
 
 
@@ -354,8 +355,8 @@ async function dislikeProduct(productId) {
             method: 'POST',
             headers: headers,
             body: JSON.stringify({
-                Token: token,
-                productId: productId,
+                product: product,
+                token: token,
                 feedback: 'dislike'
             })
         });

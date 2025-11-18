@@ -9,11 +9,13 @@
     --primary-color: #ffdd2d;
     --primary-dark: #000000;
     --secondary-color: #ffcd33;
+    --secondary-color-darker: #d1a51e;
     --bg-color: #f6f7f8;
     --bg-light: #ffffff;
     --text-primary: #111827;
     --text-secondary: #6b7280;
     --border-color: #e5e7eb;
+    --success-color: #ffecb3;
     --error-color: #ef4444;
     --warning-color: #f59e0b;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
@@ -1091,10 +1093,10 @@ body {
 }
 
 .success-message {
-    color: var(--primary-color);
+    color: var(--secondary-color-darker);
     font-size: 0.875rem;
     padding: 0.75rem;
-    background-color: #efe;
+    background-color: var(--success-color);
     border-radius: 8px;
     display: none;
 }
